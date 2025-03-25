@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield Security | Professional Cybersecurity Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#5D5CDE',
+                            dark: '#4A49B8',
+                            light: '#7E7DE6'
+                        },
+                        secondary: {
+                            DEFAULT: '#2A2A4A',
+                            dark: '#1A1A30',
+                            light: '#3A3A60'
+                        },
+                        accent: {
+                            DEFAULT: '#00C896',
+                            dark: '#00A87F',
+                            light: '#00E8AD'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * {
+            scroll-behavior: smooth;
+        }
+
+        .terminal-header {
+            height: 30px;
+            background: #2d3748;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .red { background-color: #FF5F56; }
+        .yellow { background-color: #FFBD2E; }
+        .green { background-color: #27C93F; }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid #5D5CDE;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .1em;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #5D5CDE; }
+        }
+        
+        .matrix-bg {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .matrix-bg:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        
+        .matrix-bg canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        .matrix-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: #5D5CDE;
+        }
+        
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .code-area {
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+        }
+        
+        /* Navigation styling */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #5D5CDE;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after,
+        .nav-link.active:after {
+            width: 100%;
+        }
+        
+        /* Tools section styling */
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background-color: #5D5CDE;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .result-item {
+            transition: all 0.3s ease;
+        }
+        
+        .result-item:hover {
+            background-color: rgba(93, 92, 222, 0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white dark:bg-gray-900 shadow-md z-50 transition-all duration-300" id="main-nav">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-xl font-bold text-primary-light dark:text-primary flex items-center">
+                        <i class="fas fa-shield-alt mr-2"></i>
+                        <span>CyberShield</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Home</a>
+                        <a href="#services" class="nav-link px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Services</a>
+                        <a href="#tools" class="nav-link px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Security Tools</a>
+                        <a href="#about" class="nav-link px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">About</a>
+                        <a href="#contact" class="nav-link px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Contact</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="bg-gray-100 dark:bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile menu, show/hide based on menu state -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                    <a href="#home" class="nav-link block px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Home</a>
+                    <a href="#services" class="nav-link block px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Services</a>
+                    <a href="#tools" class="nav-link block px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Security Tools</a>
+                    <a href="#about" class="nav-link block px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">About</a>
+                    <a href="#contact" class="nav-link block px-3 py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="matrix-bg pt-24 pb-32 min-h-screen flex items-center justify-center">
+        <canvas id="matrix-canvas"></canvas>
+        <div class="matrix-content container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">Secure Your Digital Future</h1>
+                    <div class="h-12 overflow-hidden mb-6">
+                        <p class="typewriter text-xl sm:text-2xl text-accent">Expert cybersecurity solutions</p>
+                    </div>
+                    <p class="text-gray-300 mb-8">Comprehensive protection for your business. Our team of experts provides cutting-edge security solutions tailored to your specific needs.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#services" class="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark transition duration-300">
+                            Our Services
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#tools" class="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-white hover:bg-gray-100 transition duration-300">
+                            Security Tools
+                            <i class="fas fa-tools ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="bg-gray-900 p-4 rounded-lg shadow-lg">
+                        <div class="terminal-header mb-2">
+                            <div class="terminal-button red"></div>
+                            <div class="terminal-button yellow"></div>
+                            <div class="terminal-button green"></div>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded-b-lg code-area">
+                            <div id="terminal-text" class="text-green-400 font-mono text-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Our Security Services</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">We provide comprehensive cybersecurity services to protect your digital assets and ensure business continuity.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Penetration Testing -->
+                <div class="service-card bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-light bg-opacity-20 text-primary mb-6">
+                        <i class="fas fa-user-secret text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Penetration Testing</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Identify vulnerabilities in your systems before attackers do. Our ethical hackers simulate real-world attacks to find security gaps.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Web Application Testing
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Network Infrastructure Testing
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Mobile Application Testing
+                        </li>
+                    </ul>
+                    <a href="#contact" class="inline-block text-primary hover:text-primary-dark font-medium transition">
+                        Learn more
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Vulnerability Assessment -->
+                <div class="service-card bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-light bg-opacity-20 text-primary mb-6">
+                        <i class="fas fa-search text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Vulnerability Assessment</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Comprehensive scanning and assessment of your systems to identify security weaknesses and provide remediation guidance.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Automated Vulnerability Scanning
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Security Configuration Review
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Detailed Remediation Roadmap
+                        </li>
+                    </ul>
+                    <a href="#contact" class="inline-block text-primary hover:text-primary-dark font-medium transition">
+                        Learn more
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Security Consultation -->
+                <div class="service-card bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-light bg-opacity-20 text-primary mb-6">
+                        <i class="fas fa-comments text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Security Consultation</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Expert guidance on security strategies, compliance, and best practices tailored to your business needs.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Security Policy Development
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Compliance Management
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Security Awareness Training
+                        </li>
+                    </ul>
+                    <a href="#contact" class="inline-block text-primary hover:text-primary-dark font-medium transition">
+                        Learn more
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Incident Response -->
+                <div class="service-card bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-light bg-opacity-20 text-primary mb-6">
+                        <i class="fas fa-fire-extinguisher text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Incident Response</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Rapid response to security incidents with a focus on minimizing damage and restoring operations quickly.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            24/7 Emergency Response
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Breach Investigation
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Recovery Planning
+                        </li>
+                    </ul>
+                    <a href="#contact" class="inline-block text-primary hover:text-primary-dark font-medium transition">
+                        Learn more
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Security Auditing -->
+                <div class="service-card bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-light bg-opacity-20 text-primary mb-6">
+                        <i class="fas fa-clipboard-check text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Security Auditing</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Comprehensive review of your security posture against industry standards and compliance requirements.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Compliance Audits (GDPR, ISO27001)
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Security Control Assessment
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Gap Analysis
+                        </li>
+                    </ul>
+                    <a href="#contact" class="inline-block text-primary hover:text-primary-dark font-medium transition">
+                        Learn more
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- WSTG Assessments -->
+                <div class="service-card bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-light bg-opacity-20 text-primary mb-6">
+                        <i class="fas fa-spider text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">WSTG Assessments</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Web application security testing following OWASP Web Security Testing Guide methodology.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Authentication & Authorization Testing
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            Input Validation Testing
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-accent mr-2"></i>
+                            API Security Assessment
+                        </li>
+                    </ul>
+                    <a href="#contact" class="inline-block text-primary hover:text-primary-dark font-medium transition">
+                        Learn more
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="py-20 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Security Tools</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">Interactive tools to assess your security posture and identify potential vulnerabilities.</p>
+            </div>
+            
+            <!-- Tools Navigation -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="tab-button active px-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 font-medium text-gray-700 dark:text-gray-300" data-tab="password-checker">
+                    Password Checker
+                </button>
+                <button class="tab-button px-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 font-medium text-gray-700 dark:text-gray-300" data-tab="port-scanner">
+                    Port Scanner
+                </button>
+                <button class="tab-button px-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 font-medium text-gray-700 dark:text-gray-300" data-tab="wstg-checklist">
+                    WSTG Checklist
+                </button>
+            </div>
+            
+            <!-- Tool Content Areas -->
+            <div class="tab-content-container">
+                <!-- Password Strength Checker -->
+                <div id="password-checker" class="tab-content active max-w-3xl mx-auto">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Password Strength Analyzer</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Check the strength of your password to ensure it meets security standards. We don't store your password.</p>
+                        
+                        <div class="mb-6">
+                            <label for="password-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter Password:</label>
+                            <div class="relative">
+                                <input type="password" id="password-input" class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" placeholder="Enter a password to check...">
+                                <button id="toggle-password" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Strength:</p>
+                            <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div id="strength-bar" class="h-full bg-red-500 transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <p id="strength-text" class="mt-2 text-sm text-gray-600 dark:text-gray-400">Not analyzed yet</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium mb-2 text-gray-800 dark:text-white">Password Requirements:</h4>
+                            <ul class="space-y-2">
+                                <li id="requirement-length" class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    At least 12 characters long
+                                </li>
+                                <li id="requirement-uppercase" class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Contains uppercase letters
+                                </li>
+                                <li id="requirement-lowercase" class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Contains lowercase letters
+                                </li>
+                                <li id="requirement-numbers" class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Contains numbers
+                                </li>
+                                <li id="requirement-special" class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Contains special characters
+                                </li>
+                                <li id="requirement-common" class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Not a commonly used password
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-medium mb-2 text-gray-800 dark:text-white">Tips for Strong Passwords:</h4>
+                            <ul class="space-y-1 text-gray-600 dark:text-gray-400 text-sm">
+                                <li>• Use a unique password for each account</li>
+                                <li>• Combine unrelated words with numbers and symbols</li>
+                                <li>• Consider using a password manager</li>
+                                <li>• Enable two-factor authentication when available</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Port Scanner Tool -->
+                <div id="port-scanner" class="tab-content max-w-3xl mx-auto">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Domain Port Scanner</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Check if common ports are open on a domain. This helps identify potential security issues.</p>
+                        
+                        <div class="mb-6">
+                            <label for="domain-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Domain to Scan:</label>
+                            <div class="flex">
+                                <input type="text" id="domain-input" class="flex-1 px-4 py-2 text-base border border-gray-300 dark:border-gray-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" placeholder="example.com">
+                                <button id="scan-button" class="px-4 py-2 bg-primary hover:bg-primary-dark text-white font-medium rounded-r-md transition duration-300">
+                                    Scan
+                                </button>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Note: Only domains that allow cross-origin requests can be scanned.</p>
+                        </div>
+                        
+                        <div id="scanner-results" class="mt-6 hidden">
+                            <h4 class="text-lg font-medium mb-3 text-gray-800 dark:text-white">Scan Results:</h4>
+                            <div class="overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700">
+                                <div class="bg-gray-100 dark:bg-gray-700 px-4 py-2 flex justify-between">
+                                    <span class="font-medium text-gray-700 dark:text-gray-300">Port</span>
+                                    <span class="font-medium text-gray-700 dark:text-gray-300">Status</span>
+                                </div>
+                                <div id="port-results" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <!-- Results will be populated here -->
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                This is a simplified scan and may not detect all open ports. For thorough security assessments, contact our professionals.
+                            </p>
+                        </div>
+                        
+                        <div id="scanner-loading" class="mt-6 hidden">
+                            <div class="flex justify-center items-center">
+                                <div class="spinner h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+                                <span class="ml-3 font-medium text-gray-700 dark:text-gray-300">Scanning ports...</span>
+                            </div>
+                        </div>
+                        
+                        <div id="scanner-error" class="mt-6 hidden">
+                            <div class="bg-red-100 dark:bg-red-900 border-l-4 border-red-500 p-4 rounded">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-exclamation-circle text-red-500 dark:text-red-400"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p id="scanner-error-message" class="text-sm text-red-700 dark:text-red-300"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WSTG Checklist Tool -->
+                <div id="wstg-checklist" class="tab-content max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">OWASP WSTG Checklist</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Track your progress with the OWASP Web Security Testing Guide checklist.</p>
+                        
+                        <div class="mb-6">
+                            <div class="flex flex-wrap gap-2">
+                                <button data-category="all" class="wstg-filter-btn px-3 py-1 bg-primary text-white rounded-full text-sm font-medium">All</button>
+                                <button data-category="info" class="wstg-filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium">Information Gathering</button>
+                                <button data-category="config" class="wstg-filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium">Configuration Testing</button>
+                                <button data-category="auth" class="wstg-filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium">Authentication Testing</button>
+                                <button data-category="session" class="wstg-filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium">Session Management</button>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700">
+                            <div class="bg-gray-100 dark:bg-gray-700 px-4 py-3 flex items-center">
+                                <span class="w-8"></span>
+                                <span class="font-medium text-gray-700 dark:text-gray-300 flex-1">Test Name</span>
+                                <span class="w-24 text-right font-medium text-gray-700 dark:text-gray-300">Status</span>
+                            </div>
+                            <div id="wstg-items" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- WSTG items will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-between items-center">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Completion: </span>
+                                <span id="wstg-completion" class="text-sm font-medium text-primary">0%</span>
+                            </div>
+                            <button id="reset-checklist" class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300">
+                                Reset Checklist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">About CyberShield</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">We are a team of cybersecurity experts dedicated to protecting businesses from digital threats.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Our Mission</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">At CyberShield, our mission is to provide best-in-class security solutions that empower businesses to operate confidently in an increasingly complex digital landscape. We believe that cybersecurity is not just about technology, but about protecting people, businesses, and their futures.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 mt-8">Our Approach</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">We take a proactive approach to security, identifying vulnerabilities before they can be exploited. Our team stays at the forefront of security research, constantly adapting our methods to address emerging threats and attack vectors.</p>
+                    
+                    <div class="mt-8">
+                        <h4 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Core Values</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-primary"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg font-medium text-gray-800 dark:text-white">Integrity</h5>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">We maintain the highest ethical standards</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                    <i class="fas fa-lightbulb text-primary"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg font-medium text-gray-800 dark:text-white">Innovation</h5>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">We constantly evolve our approaches</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                    <i class="fas fa-users text-primary"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg font-medium text-gray-800 dark:text-white">Collaboration</h5>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">We work closely with our clients</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                    <i class="fas fa-graduation-cap text-primary"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg font-medium text-gray-800 dark:text-white">Expertise</h5>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">We maintain cutting-edge knowledge</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Certifications & Expertise</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3">Industry Certifications</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                    <i class="fas fa-certificate mr-1"></i> CISSP
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                    <i class="fas fa-certificate mr-1"></i> CEH
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                                    <i class="fas fa-certificate mr-1"></i> OSCP
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                    <i class="fas fa-certificate mr-1"></i> CISM
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    <i class="fas fa-certificate mr-1"></i> GPEN
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3">Technologies</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                    Cloud Security
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                    Network Security
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                    Web Application Security
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                    Mobile Security
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                    IoT Security
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3">Industries Served</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-check-circle text-accent mr-2"></i>
+                                    Financial Services
+                                </li>
+                                <li class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-check-circle text-accent mr-2"></i>
+                                    Healthcare
+                                </li>
+                                <li class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-check-circle text-accent mr-2"></i>
+                                    E-commerce & Retail
+                                </li>
+                                <li class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-check-circle text-accent mr-2"></i>
+                                    Government & Public Sector
+                                </li>
+                                <li class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <i class="fas fa-check-circle text-accent mr-2"></i>
+                                    Technology & SaaS
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Get In Touch</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">Ready to secure your digital assets? Contact us for a free consultation.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800 dark:text-white">Contact Information</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h5 class="text-lg font-medium text-gray-800 dark:text-white">Email</h5>
+                                <p class="text-gray-600 dark:text-gray-400">contact@cybershield.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                <i class="fas fa-phone text-primary"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h5 class="text-lg font-medium text-gray-800 dark:text-white">Phone</h5>
+                                <p class="text-gray-600 dark:text-gray-400">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-light bg-opacity-20 flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h5 class="text-lg font-medium text-gray-800 dark:text-white">Location</h5>
+                                <p class="text-gray-600 dark:text-gray-400">123 Security Street, Cyber City</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Connect With Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white transition-colors duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white transition-colors duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800 dark:text-white">Send Us a Message</h3>
+                    
+                    <form id="contact-form" class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Your Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" required>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" required>
+                        </div>
+                        
+                        <div>
+                            <label for="service" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Service Interested In</label>
+                            <select id="service" name="service" class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                                <option value="">Select a service</option>
+                                <option value="pentesting">Penetration Testing</option>
+                                <option value="vulnerability">Vulnerability Assessment</option>
+                                <option value="consultation">Security Consultation</option>
+                                <option value="incident">Incident Response</option>
+                                <option value="auditing">Security Auditing</option>
+                                <option value="wstg">WSTG Assessment</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 text-base border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" required></textarea>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="w-full px-6 py-3 bg-primary hover:bg-primary-dark text-white font-medium rounded-md transition duration-300">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div id="form-success" class="mt-4 hidden">
+                        <div class="bg-green-100 dark:bg-green-900 border-l-4 border-green-500 p-4 rounded">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check-circle text-green-500 dark:text-green-400"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-green-700 dark:text-green-300">Your message has been sent successfully. We'll get back to you soon!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-xl font-bold text-white flex items-center mb-4">
+                        <i class="fas fa-shield-alt mr-2"></i>
+                        <span>CyberShield</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Comprehensive cybersecurity solutions for your business.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Penetration Testing</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Vulnerability Assessment</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Security Consultation</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Incident Response</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">Security Auditing</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Tools</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#tools" class="text-gray-400 hover:text-white transition-colors">Password Checker</a></li>
+                        <li><a href="#tools" class="text-gray-400 hover:text-white transition-colors">Port Scanner</a></li>
+                        <li><a href="#tools" class="text-gray-400 hover:text-white transition-colors">WSTG Checklist</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-envelope mr-2"></i>
+                            contact@cybershield.com
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-phone mr-2"></i>
+                            +1 (555) 123-4567
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            123 Security Street, Cyber City
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">&copy; 2023 CyberShield Security. All rights reserved.</p>
+                <div class="mt-4 md:mt-0 flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when clicking on a link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            // Sticky header
+            const header = document.getElementById('main-nav');
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY > 100) {
+                    header.classList.add('shadow-lg');
+                } else {
+                    header.classList.remove('shadow-lg');
+                }
+                
+                lastScrollY = currentScrollY;
+            });
+            
+            // Active navigation highlighting
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Matrix background effect
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = document.querySelector('.matrix-bg').offsetHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Matrix rain effect
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+            }
+            
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#5D5CDE';
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(drawMatrix, 80);
+            
+            // Terminal typing effect
+            const terminalText = document.getElementById('terminal-text');
+            const textToType = [
+                '> Initiating security scan...',
+                '> Checking for vulnerabilities...',
+                '> Scanning network ports...',
+                '> Analyzing system configuration...',
+                '> No critical vulnerabilities found.',
+                '> Security status: PROTECTED'
+            ];
+            
+            let lineIndex = 0;
+            let charIndex = 0;
+            
+            function typeTerminalText() {
+                if (lineIndex < textToType.length) {
+                    if (charIndex < textToType[lineIndex].length) {
+                        terminalText.innerHTML += textToType[lineIndex].charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeTerminalText, 35);
+                    } else {
+                        terminalText.innerHTML += '<br>';
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(typeTerminalText, 800);
+                    }
+                }
+            }
+            
+            setTimeout(typeTerminalText, 1000);
+            
+            // Tools section tabs
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Password Checker
+            const passwordInput = document.getElementById('password-input');
+            const strengthBar = document.getElementById('strength-bar');
+            const strengthText = document.getElementById('strength-text');
+            const togglePassword = document.getElementById('toggle-password');
+            
+            // Common passwords list (abbreviated)
+            const commonPasswords = [
+                'password', '12345678', 'qwerty', 'admin', '1234', 'welcome',
+                'password123', 'abc123', 'letmein', 'monkey', '1234567', 'sunshine',
+                '123456789', 'football', 'iloveyou', '123123', '111111', '1q2w3e4r',
+                'baseball', 'dragon', 'master', 'login', 'princess', '0000', 'shadow'
+            ];
+            
+            passwordInput.addEventListener('input', checkPasswordStrength);
+            
+            function checkPasswordStrength() {
+                const password = passwordInput.value;
+                let score = 0;
+                
+                // Length check
+                if (password.length >= 12) {
+                    score += 25;
+                    updateRequirement('requirement-length', true);
+                } else {
+                    updateRequirement('requirement-length', false);
+                }
+                
+                // Uppercase check
+                if (/[A-Z]/.test(password)) {
+                    score += 15;
+                    updateRequirement('requirement-uppercase', true);
+                } else {
+                    updateRequirement('requirement-uppercase', false);
+                }
+                
+                // Lowercase check
+                if (/[a-z]/.test(password)) {
+                    score += 15;
+                    updateRequirement('requirement-lowercase', true);
+                } else {
+                    updateRequirement('requirement-lowercase', false);
+                }
+                
+                // Number check
+                if (/[0-9]/.test(password)) {
+                    score += 15;
+                    updateRequirement('requirement-numbers', true);
+                } else {
+                    updateRequirement('requirement-numbers', false);
+                }
+                
+                // Special character check
+                if (/[^A-Za-z0-9]/.test(password)) {
+                    score += 15;
+                    updateRequirement('requirement-special', true);
+                } else {
+                    updateRequirement('requirement-special', false);
+                }
+                
+                // Common password check
+                const isCommon = commonPasswords.includes(password.toLowerCase());
+                if (!isCommon && password.length > 0) {
+                    score += 15;
+                    updateRequirement('requirement-common', true);
+                } else {
+                    updateRequirement('requirement-common', false);
+                }
+                
+                // Update the strength bar
+                strengthBar.style.width = `${Math.min(score, 100)}%`;
+                
+                // Set the color and text based on score
+                if (score < 40) {
+                    strengthBar.style.backgroundColor = '#EF4444'; // Red
+                    strengthText.textContent = 'Weak';
+                } else if (score < 70) {
+                    strengthBar.style.backgroundColor = '#F59E0B'; // Yellow
+                    strengthText.textContent = 'Moderate';
+                } else {
+                    strengthBar.style.backgroundColor = '#10B981'; // Green
+                    strengthText.textContent = 'Strong';
+                }
+                
+                if (password.length === 0) {
+                    strengthText.textContent = 'Not analyzed yet';
+                }
+            }
+            
+            function updateRequirement(id, fulfilled) {
+                const element = document.getElementById(id);
+                const icon = element.querySelector('i');
+                
+                if (fulfilled) {
+                    icon.className = 'fas fa-check-circle text-green-500 mr-2';
+                } else {
+                    icon.className = 'fas fa-times-circle text-red-500 mr-2';
+                }
+            }
+            
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Change the icon
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+            
+            // Port Scanner
+            const domainInput = document.getElementById('domain-input');
+            const scanButton = document.getElementById('scan-button');
+            const scannerResults = document.getElementById('scanner-results');
+            const portResults = document.getElementById('port-results');
+            const scannerLoading = document.getElementById('scanner-loading');
+            const scannerError = document.getElementById('scanner-error');
+            const scannerErrorMessage = document.getElementById('scanner-error-message');
+            
+            scanButton.addEventListener('click', async () => {
+                const domain = domainInput.value.trim();
+                
+                if (!domain) {
+                    showScannerError('Please enter a valid domain');
+                    return;
+                }
+                
+                // Show loading and hide results/error
+                scannerLoading.classList.remove('hidden');
+                scannerResults.classList.add('hidden');
+                scannerError.classList.add('hidden');
+                
+                // Simulate port scanning (in a real tool, this would be server-side)
+                try {
+                    simulatePortScan(domain);
+                } catch (error) {
+                    showScannerError(error.message);
+                    scannerLoading.classList.add('hidden');
+                }
+            });
+            
+            function simulatePortScan(domain) {
+                // Clear any previous results
+                portResults.innerHTML = '';
+                
+                // Common ports to scan
+                const portsToScan = [
+                    { port: 80, service: 'HTTP' },
+                    { port: 443, service: 'HTTPS' },
+                    { port: 21, service: 'FTP' },
+                    { port: 22, service: 'SSH' },
+                    { port: 25, service: 'SMTP' },
+                    { port: 110, service: 'POP3' },
+                    { port: 143, service: 'IMAP' },
+                    { port: 3306, service: 'MySQL' },
+                    { port: 3389, service: 'RDP' },
+                    { port: 8080, service: 'HTTP Proxy' }
+                ];
+                
+                // Simulate scanning process
+                let completedPorts = 0;
+                
+                portsToScan.forEach((portInfo, index) => {
+                    // Simulate random response time
+                    setTimeout(() => {
+                        // Simulate random result (in real scanner, would do actual testing)
+                        const isOpen = Math.random() > 0.7;
+                        const status = isOpen ? 'Open' : 'Closed';
+                        const statusClass = isOpen ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400';
+                        
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'result-item px-4 py-3 flex justify-between items-center';
+                        resultItem.innerHTML = `
+                            <div>
+                                <span class="font-medium">${portInfo.port}</span>
+                                <span class="text-gray-500 dark:text-gray-400 ml-2">${portInfo.service}</span>
+                            </div>
+                            <span class="font-medium ${statusClass}">${status}</span>
+                        `;
+                        
+                        portResults.appendChild(resultItem);
+                        
+                        completedPorts++;
+                        
+                        // Check if all ports have been scanned
+                        if (completedPorts === portsToScan.length) {
+                            // Hide loading and show results
+                            scannerLoading.classList.add('hidden');
+                            scannerResults.classList.remove('hidden');
+                        }
+                    }, 500 + (index * 300)); // Stagger the results
+                });
+            }
+            
+            function showScannerError(message) {
+                scannerErrorMessage.textContent = message;
+                scannerError.classList.remove('hidden');
+                scannerResults.classList.add('hidden');
+            }
+            
+            // WSTG Checklist
+            const wstgItems = document.getElementById('wstg-items');
+            const wstgFilterButtons = document.querySelectorAll('.wstg-filter-btn');
+            const wstgCompletionText = document.getElementById('wstg-completion');
+            const resetChecklistButton = document.getElementById('reset-checklist');
+            
+            // WSTG test items (abbreviated list)
+            const wstgTestItems = [
+                { id: 'WSTG-INFO-01', name: 'Conduct Search Engine Discovery', category: 'info' },
+                { id: 'WSTG-INFO-02', name: 'Fingerprint Web Server', category: 'info' },
+                { id: 'WSTG-INFO-03', name: 'Review Webserver Metafiles', category: 'info' },
+                { id: 'WSTG-INFO-04', name: 'Enumerate Applications on Webserver', category: 'info' },
+                { id: 'WSTG-INFO-05', name: 'Review Webpage Content', category: 'info' },
+                
+                { id: 'WSTG-CONF-01', name: 'Test Network Infrastructure Configuration', category: 'config' },
+                { id: 'WSTG-CONF-02', name: 'Test Application Platform Configuration', category: 'config' },
+                { id: 'WSTG-CONF-03', name: 'Test File Extensions Handling', category: 'config' },
+                { id: 'WSTG-CONF-04', name: 'Review Old Backup and Unreferenced Files', category: 'config' },
+                { id: 'WSTG-CONF-05', name: 'Enumerate Infrastructure and Application Admin Interfaces', category: 'config' },
+                
+                { id: 'WSTG-ATHN-01', name: 'Testing for Credentials Transported over Encrypted Channel', category: 'auth' },
+                { id: 'WSTG-ATHN-02', name: 'Testing for Default Credentials', category: 'auth' },
+                { id: 'WSTG-ATHN-03', name: 'Testing for Weak Lock Out Mechanism', category: 'auth' },
+                { id: 'WSTG-ATHN-04', name: 'Testing for Bypassing Authentication Schema', category: 'auth' },
+                { id: 'WSTG-ATHN-05', name: 'Testing for Vulnerable Remember Password', category: 'auth' },
+                
+                { id: 'WSTG-SESS-01', name: 'Testing for Session Management Schema', category: 'session' },
+                { id: 'WSTG-SESS-02', name: 'Testing for Cookies Attributes', category: 'session' },
+                { id: 'WSTG-SESS-03', name: 'Testing for Session Fixation', category: 'session' },
+                { id: 'WSTG-SESS-04', name: 'Testing for Exposed Session Variables', category: 'session' },
+                { id: 'WSTG-SESS-05', name: 'Testing for Cross Site Request Forgery', category: 'session' }
+            ];
+            
+            // Initialize checklist from localStorage or create new one
+            let checklist = JSON.parse(localStorage.getItem('wstgChecklist')) || {};
+            
+            // Initialize checklist if empty
+            if (Object.keys(checklist).length === 0) {
+                wstgTestItems.forEach(item => {
+                    checklist[item.id] = false;
+                });
+            }
+            
+            // Render the checklist
+            function renderWSTGChecklist(filter = 'all') {
+                wstgItems.innerHTML = '';
+                
+                let filteredItems = wstgTestItems;
+                if (filter !== 'all') {
+                    filteredItems = wstgTestItems.filter(item => item.category === filter);
+                }
+                
+                filteredItems.forEach(item => {
+                    const isChecked = checklist[item.id];
+                    
+                    const listItem = document.createElement('div');
+                    listItem.className = 'px-4 py-3 flex items-center hover:bg-gray-50 dark:hover:bg-gray-800';
+                    listItem.innerHTML = `
+                        <div class="w-8">
+                            <input type="checkbox" id="${item.id}" class="h-5 w-5 text-primary focus:ring-primary rounded" ${isChecked ? 'checked' : ''}>
+                        </div>
+                        <label for="${item.id}" class="flex-1 ml-2 cursor-pointer">
+                            <div class="font-medium text-gray-700 dark:text-gray-300">${item.id}</div>
+                            <div class="text-gray-600 dark:text-gray-400 text-sm">${item.name}</div>
+                        </label>
+                    `;
+                    
+                    wstgItems.appendChild(listItem);
+                    
+                    // Add event listener to the checkbox
+                    const checkbox = listItem.querySelector(`#${item.id}`);
+                    checkbox.addEventListener('change', (e) => {
+                        checklist[item.id] = e.target.checked;
+                        updateWSTGCompletion();
+                        // Save to localStorage
+                        localStorage.setItem('wstgChecklist', JSON.stringify(checklist));
+                    });
+                });
+                
+                updateWSTGCompletion();
+            }
+            
+            // Update completion percentage
+            function updateWSTGCompletion() {
+                const total = Object.keys(checklist).length;
+                const completed = Object.values(checklist).filter(Boolean).length;
+                const percentage = Math.round((completed / total) * 100);
+                
+                wstgCompletionText.textContent = `${percentage}%`;
+            }
+            
+            // Filter buttons
+            wstgFilterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    wstgFilterButtons.forEach(btn => btn.classList.remove('bg-primary', 'text-white'));
+                    button.classList.add('bg-primary', 'text-white');
+                    
+                    const filter = button.getAttribute('data-category');
+                    renderWSTGChecklist(filter);
+                });
+            });
+            
+            // Reset checklist
+            resetChecklistButton.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset the checklist? This will clear all your progress.')) {
+                    Object.keys(checklist).forEach(key => {
+                        checklist[key] = false;
+                    });
+                    
+                    localStorage.setItem('wstgChecklist', JSON.stringify(checklist));
+                    renderWSTGChecklist('all');
+                }
+            });
+            
+            // Initial render
+            renderWSTGChecklist('all');
+            
+            // Contact form handling
+            const contactForm = document.getElementById('contact-form');
+            const formSuccess = document.getElementById('form-success');
+            
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    formSuccess.classList.remove('hidden');
+                    contactForm.reset();
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        formSuccess.classList.add('hidden');
+                    }, 5000);
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
